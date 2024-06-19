@@ -13,23 +13,30 @@
 class Actor < ApplicationRecord
   validates(:name, presence: true)
 
-  def characters
-    key = self.id
+  # def characters
+  #   key = self.id
 
-    the_many = Character.where({ :actor_id => key })
+  #   the_many = Character.where({ :actor_id => key })
 
-    return the_many
-  end
+  #   return the_many
+  # end
 
-  def filmography
-    the_many = Array.new
+  #one actor has many characters
+  has_many(:characters, foreign_key:"actor_id")
 
-    self.characters.each do |joining_record|
-      destination_record = joining_record.movie
+  # def filmography
+  #   the_many = Array.new
 
-      the_many.push(destination_record)
-    end
+  #   self.characters.each do |joining_record|
+  #     destination_record = joining_record.movie
 
-    return the_many
-  end
+  #     the_many.push(destination_record)
+  #   end
+
+  #   return the_many
+  # end
+
+  #iterate through each character and join to movie.
+  has_many(:filmography,through: :characters, source: :movie)
+
 end
